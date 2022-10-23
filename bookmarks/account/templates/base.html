@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/base.css' %}" rel="stylesheet" >
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <div id='header'>
+        <span class='logo'>Student Management System</span>
+        {% if request.user.is_authenticated %}
+          <ul class='menu'>
+            <li {% if section == 'dashboard' %} class="selected"  {% endif %}>
+            <a href="{% url 'dashboard' %}">My Dashboard</a>
+            </li>
+            <li {% if section == 'images' %} class="selected"  {% endif %}>
+            <a href="#">Images</a>
+            </li>
+            <li {% if section == 'people' %} class="selected"  {% endif %}>
+            <a href="#">People</a>
+            </li>
+          </ul>
+        {% endif %}
+        <span class ='user'>
+         {% if request.user.is_authenticated %}
+         Hello {{ request.user.first_name }}
+         <a href ="{% url 'logout' %}">Logout</a>
+         {% else %}
+         <a href ="{% url 'login' %}">Login</a>
+         {% endif %}
+        </span>
+
+      
+    </div>
+
+    <div id='content'>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">x</a>
+            </li>
+            {% endfor %}
+        </ul>
+      {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+
+  </body>
+</html>
